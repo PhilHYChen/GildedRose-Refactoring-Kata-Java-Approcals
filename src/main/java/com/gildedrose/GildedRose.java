@@ -12,6 +12,11 @@ class GildedRose {
 
     public void updateQuality() {
     	
+    	// Define the default strategies and value bound...
+    	Function<Item, Integer> defaultQualityDeltaStrategy = item -> (item.sellIn < 1) ? -2 : -1;
+    	Integer defaultQualityMaxValue = 50;
+    	Function<Item, Integer> defaultSellInStrategy = item -> -1;
+    	
     	// Register item-specific quality changing strategies here...
     	Map<String, Function<Item, Integer>> qualityDeltaStrategyRegistry = Map.of(
     			"Aged Brie", item -> (item.sellIn < 1) ? 2 : 1,
@@ -33,11 +38,6 @@ class GildedRose {
     	Map<String, Function<Item, Integer>> sellInDeltaStrategyRegistry = Map.of(
     			"Sulfuras, Hand of Ragnaros", item -> 0
     			);
-    	
-    	// Define the default strategies and value bound...
-    	Function<Item, Integer> defaultQualityDeltaStrategy = item -> (item.sellIn < 1) ? -2 : -1;
-    	Integer defaultQualityMaxValue = 50;
-    	Function<Item, Integer> defaultSellInStrategy = item -> -1;
     	
     	// Execute update...
         for (Item item : items) {

@@ -19,24 +19,26 @@ class GildedRose {
     	// Register item-specific Quality changing strategies.
     	// Each strategy should return only the per-day delta in Quality.
     	Map<String, Function<Item, Integer>> qualityDeltaStrategyRegistry = Map.of(
-    			"Aged Brie", item -> (item.sellIn < 1) ? 2 : 1, // "Aged Bries" increases in Quality instead.
-    			"Sulfuras, Hand of Ragnaros", item -> 0, // "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
-    			"Backstage passes to a TAFKAL80ETC concert", 
-    				item -> (item.sellIn > 10) ? 1 : 
-    						(item.sellIn > 5) ? 2 : 
-							(item.sellIn > 0) ? 3 : Integer.MIN_VALUE, // "Backstage passes" increases in Quality as its SellIn value approaches until expiry.  
-				"Conjured Mana Cake", item -> (item.sellIn < 0) ? -4 : -2 // "Conjured" items degrade in Quality twice as fast as normal items.    										
+    			"Aged Brie", item -> (item.sellIn < 1) ? 2 : 1, 
+    			"Sulfuras, Hand of Ragnaros", item -> 0, 
+    			"Backstage passes to a TAFKAL80ETC concert", item -> {
+    		            if (item.sellIn > 10) return 1;
+    		            if (item.sellIn > 5) return 2;
+    		            if (item.sellIn > 0) return 3;
+    		            return Integer.MIN_VALUE;
+    		        }, 
+				"Conjured Mana Cake", item -> (item.sellIn < 0) ? -4 : -2    										
     			);
     		    	
     	// Register item-specific Quality max values.
     	Map<String, Integer> qualityMaxValueRegistry = Map.of(
-    			"Sulfuras, Hand of Ragnaros", 80 // "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
+    			"Sulfuras, Hand of Ragnaros", 80
     			);
 
     	// Register item-specific Sell-In changing strategies.
     	// Each strategy should return only the per-day delta in Sell-In.
     	Map<String, Function<Item, Integer>> sellInDeltaStrategyRegistry = Map.of(
-    			"Sulfuras, Hand of Ragnaros", item -> 0 //"Sulfuras", being a legendary item, never has to be sold or decreases in Quality
+    			"Sulfuras, Hand of Ragnaros", item -> 0
     			);
     		
     	// Execute update for each Item object...
